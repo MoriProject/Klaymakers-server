@@ -13,16 +13,16 @@ const MetaMaskLoginButton = () => {
 
     const connectWallet = async () => {
         if (window.ethereum) {
-            const networkId = window.ethereum.networkVersion || window.ethereum.chainId;
-            console.log("현재 연결된 네트워크 ID:", networkId);
-            const selectedAddress = window.ethereum.selectedAddress;
-            if (selectedAddress) {
-                console.log("현재 Metamask에서 선택한 계정 주소:", selectedAddress);
-                console.log("계정 권한이 있습니다.");
-            } else {
-                console.log("Metamask에서 계정을 선택하지 않았습니다.");
-                console.log("계정 권한이 없습니다.");
-            }
+            // const networkId = window.ethereum.networkVersion || window.ethereum.chainId;
+            // console.log("현재 연결된 네트워크 ID:", networkId);
+            // const selectedAddress = window.ethereum.selectedAddress;
+            // if (selectedAddress) {
+            //     console.log("현재 Metamask에서 선택한 계정 주소:", selectedAddress);
+            //     console.log("계정 권한이 있습니다.");
+            // } else {
+            //     console.log("Metamask에서 계정을 선택하지 않았습니다.");
+            //     console.log("계정 권한이 없습니다.");
+            // }
             // if (window.klaytn) {
             try {
                 const web3 = new Web3(window.ethereum);
