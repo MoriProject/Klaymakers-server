@@ -13,24 +13,22 @@ const InfoWithZeroVals = () => {
     useEffect(() => {
         async function fetchContractData() {
             try {
-                // Contract.js 파일에서 스마트 계약 함수 호출 및 데이터 가져오기
                 const contractBalance = await contractInstance.methods.getContractBalance().call();
                 const tokensForSale = await contractInstance.methods.getTokensForSale().call();
                 const soldTokens = await contractInstance.methods.getSoldTokens().call();
                 const owner = await contractInstance.methods.owner().call();
 
-                // const BalancetoWei = Web3.utils.fromWei(contractData.contractBalance.toString(), 'ether');
-                const BalancetoEther = parseFloat(Web3.utils.fromWei(contractData.contractBalance.toString(), 'ether'));
-                console.log(BalancetoEther); // 예상 출력: 0
+                const BalancetoEther = parseFloat(Web3.utils.fromWei(contractData.contractBalance, 'ether'));
+                console.log(BalancetoEther);
+                console.log(contractBalance);
 
-                // 가져온 데이터를 상태 변수에 설정
                 setContractData({
                     contractBalance,
                     tokensForSale,
                     soldTokens,
                     owner
                 });
-                console.log(contractBalance);
+                // console.log(contractBalance);
             } catch (error) {
                 console.error('오류 발생:', error);
             }
@@ -42,7 +40,7 @@ const InfoWithZeroVals = () => {
     return (
         <div>
             <h2>Contract Info</h2>
-            <p>Contract Balance: {contractData.contractBalance} ETH</p>
+            <p>Contract Balance: {contractData.contractBalance.toString()} ETH</p>
             <p>Tokens for Sale: {contractData.tokensForSale.join(', ')}</p>
             <p>Sold Tokens: {contractData.soldTokens.join(', ')}</p>
             <p>Owner: {contractData.owner}</p>

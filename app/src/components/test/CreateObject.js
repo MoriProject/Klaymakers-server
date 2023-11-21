@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import web3 from 'web3';
+import Web3 from 'web3';
 import { useSelector } from 'react-redux';
 import contractInstance from "../../contracts/Contract";
 
@@ -15,19 +15,10 @@ const CreateObject = () => {
 
     const handleCreateObject = async (e) => {
         e.preventDefault();
-        // console.log(window.ethereum);
-        // console.log(account);
-        // console.log(window.ethereum.chainId);
-        // console.log("1");
 
-        const priceInEther = web3.utils.toWei(priceInWei.toString(), 'ether');
-        // console.log("2");
+        const priceInEther = Web3.utils.toWei(priceInWei.toString(), 'ether');
 
         try {
-            // console.log(account);
-            // console.log(priceInEther);
-            // console.log(2.2);
-            // console.log("2.5");
             await contractInstance.methods.createObject(
                 name,
                 description,
@@ -39,7 +30,6 @@ const CreateObject = () => {
                 from: account,
                 gas: 2000000
             });
-            // console.log("3");
 
             alert("Object created successfully!");
 
