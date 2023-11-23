@@ -1,8 +1,9 @@
 import React from 'react';
 import Web3 from 'web3';
 import { useDispatch, useSelector } from 'react-redux';
+import './styles.scss';
 
-const MetaMaskLoginButton = () => {
+const LoginButton = () => {
 
     const dispatch = useDispatch();
     const account = useSelector((state) => state.account);
@@ -40,4 +41,4 @@ const MetaMaskLoginButton = () => {
     );
 };
 
-export default MetaMaskLoginButton;
+export default LoginButton;
