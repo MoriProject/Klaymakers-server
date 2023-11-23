@@ -27,18 +27,22 @@ const LoginButton = () => {
         dispatch({ type: 'CLEAR_ACCOUNT' });
     };
 
-    return (
-        <div>
-            {account ? (
-                <>
-                    <div>Connected: {account}</div>
-                    <button onClick={disconnectWallet}>Logout</button>
-                </>
-            ) : (
-                <button onClick={connectWallet}>Connect with MetaMask</button>
-            )}
-        </div>
-    );
+    let buttonContent;
+    if (account) {
+        const shortenedAccount = `${account.slice(0, 5)}...${account.slice(-4)}`;
+        buttonContent = (
+            <>
+                <div>Connected: {shortenedAccount}</div>
+                <button onClick={disconnectWallet}>Logout</button>
+            </>
+        );
+    } else {
+        buttonContent = (
+            <button onClick={connectWallet}>Sign in with Metamask</button>
+        );
+    }
+
+    return <div>{buttonContent}</div>;
 };
 
 export default LoginButton;
