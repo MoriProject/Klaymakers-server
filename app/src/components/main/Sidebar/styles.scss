@@ -1,6 +1,7 @@
 .sidebar {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     width: 240px;
     height: 100%;
     position: fixed;
@@ -11,24 +12,38 @@
     // padding-left: 20px;
     z-index: 10;
 
-    .active {
-        background-color: #4a4974;
-        color: chartreuse;
-    }
+    div {
+        display: flex;
+        flex-direction: column;
 
-    button {
-        height: 50px;
-        box-sizing: border-box;
-        text-align: left;
-        background-color: #31304d;
-        border: none;
-        color: white;
-        padding-left: 30px;
-        margin-top: 10px;
-        font-size: 18px;
-
-        &:hover {
+        .active {
             background-color: #4a4974;
+            color: chartreuse;
+        }
+
+        button {
+            height: 50px;
+            box-sizing: border-box;
+            text-align: left;
+            background-color: #31304d;
+            border: none;
+            color: white;
+            padding-left: 30px;
+            margin-top: 10px;
+            font-size: 18px;
+
+            &:hover {
+                background-color: #4a4974;
+            }
         }
     }
+
+    .icons {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        margin-bottom: 20px;
+    }
+
+
 }

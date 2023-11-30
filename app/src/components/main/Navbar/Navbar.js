@@ -5,7 +5,7 @@ import './styles.scss';
 const Navbar = () => {
     return (
         <nav className='navbar'>
-            To The Moon
+            T T M
             <LoginButton />
         </nav>
     );
