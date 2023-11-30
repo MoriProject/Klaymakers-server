@@ -1,8 +1,9 @@
 # TTM
-We created A service proposal that allows you to buy and sell RWA object rights and check and verify rights owned by users.
 
 ## Introduction
 This project is a TTM project by the To The Moon team, which participated in [KLAYMAKERS 23](https://developer.klaytn.foundation/klaymakers23/) as The Real-World Assets (RWAs) track.
+
+We created A service proposal that allows you to buy and sell RWA object rights and check and verify rights owned by users.
 
 You can check out our [BUIDL](https://dorahacks.io/buidl/7621) that we have written on DoraHack.
 ## Technologies
