@@ -97,6 +97,12 @@ We would like to thank the To The Moon team members who participated in this pro
 - [ESblueRin](https://github.com/ESblueRin)
 - [Saccharine1211](https://github.com/Saccharine1211)
 
+## Pitch Deck
+[Link](https://docs.google.com/presentation/d/19MYsPnsBmzkGFyNUTa4zDzi1xr6bn3gNZ3Zdr_A8wf4/edit?usp=sharing)
+
+## Demo Video
+[![YouTube 동영상](https://img.youtube.com/vi/8zTOrLBJe2U/0.jpg)](https://www.youtube.com/watch?v=8zTOrLBJe2U)
+
 ## Screenshots
 ![KakaoTalk_20231201_051048046](https://github.com/Project-morimori/TTM/assets/66289619/2ce065b0-d82b-460e-9edc-b77514da5e27)
 
