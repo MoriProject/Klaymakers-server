@@ -5,7 +5,7 @@ import './styles.scss';
 const Navbar = () => {
     return (
         <nav className='navbar'>
-            T T M
+            <p>T T M</p>
             <LoginButton />
         </nav>
     );
