@@ -4,6 +4,8 @@ import { Provider } from 'react-redux';
 import store from './stores/store';
 import TestPage from './pages/TestPage';
 import MainPage from './pages/MainPage';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   return (
@@ -15,6 +17,7 @@ function App() {
             <Route path="/test" element={<TestPage />} />
 
           </Routes>
+          <ToastContainer />
         </div>
       </Router>
     </Provider>

@@ -14,6 +14,27 @@ const LoginButton = () => {
             try {
                 const web3 = new Web3(window.ethereum);
                 await window.ethereum.request({ method: 'eth_requestAccounts' });
+
+                const chainId = await web3.eth.getChainId();
+                if (chainId !== '0x3E9') {
+                    await window.ethereum.request({
+                        method: 'wallet_addEthereumChain',
+                        params: [
+                            {
+                                chainId: '0x3E9',
+                                chainName: 'Baobab',
+                                nativeCurrency: {
+                                    name: 'Klaytn',
+                                    symbol: 'KLAY',
+                                    decimals: 18,
+                                },
+                                rpcUrls: ['https://api.baobab.klaytn.net:8651'],
+                            },
+                        ],
+                    });
+                    await window.ethereum.request({ method: 'eth_requestAccounts' });
+                }
+
                 const accounts = await web3.eth.getAccounts();
                 dispatch({ type: 'SET_ACCOUNT', payload: accounts[0] });
                 setIsDropdownVisible(true);
@@ -49,7 +70,7 @@ const LoginButton = () => {
                 onMouseLeave={handleMouseLeave}
                 className="dropdown-container"
             >
-                <div className="connected">Connected: {shortenedAccount}</div>
+                <div className="connected">{shortenedAccount}</div>
                 {isDropdownVisible && (
                     <div className="dropdown-menu">
                         <button onClick={disconnectWallet}>Logout</button>
@@ -59,7 +80,7 @@ const LoginButton = () => {
         );
     } else {
         buttonContent = (
-            <button className='btn_signin' onClick={connectWallet}>Sign in with Metamask</button>
+            <button className="connect" onClick={connectWallet}>Sign in with Metamask</button>
         );
     }
 

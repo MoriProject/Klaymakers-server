@@ -1,11 +1,11 @@
 import React from "react";
 
-const Home = () => {
+const MyObject = () => {
     return (
         <div className="container">
-            home
+            MyObject
         </div>
     )
 }
 
-export default Home;
+export default MyObject;

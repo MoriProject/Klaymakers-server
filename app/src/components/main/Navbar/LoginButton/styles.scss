@@ -2,3 +2,40 @@
     width: 150px;
     height: 40px;
 }
+
+.connect {
+    display: flex;
+    width: 160px;
+    height: 40px;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid white;
+    background-color: #4a4974;
+    color: white;
+    box-sizing: border-box;
+}
+
+.connected {
+    display: flex;
+    width: 160px;
+    height: 40px;
+    justify-content: center;
+    align-items: center;
+    background-color: #4a4974;
+    border: 1px solid white;
+    box-sizing: border-box;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 50px;
+
+    button {
+        width: 160px;
+        height: 40px;
+        border: 1px solid white;
+        background-color: #4a4974;
+        color: white;
+        box-sizing: border-box;
+    }
+}
