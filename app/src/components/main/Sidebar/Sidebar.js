@@ -19,10 +19,10 @@ const Sidebar = ({ currentPage, changePage }) => {
                 {/* {"0xec5656a2fb4CF5A735dE5680361E0292D0274B6c" === account ? <p onClick={() => changePage('withdraw')}>Withdraw</p> : null} */}
             </div>
             <div className="icons">
-                <a>
+                <a href="https://github.com/Project-morimori/TTM" target="_blank">
                     <FaGithub size={30} />
                 </a>
-                <a>
+                <a href="https://dorahacks.io/buidl/7621" target="_blank">
                     <FaLink size={30} />
                 </a>
             </div>
