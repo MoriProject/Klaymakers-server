@@ -6,6 +6,7 @@ import { Buffer } from 'buffer';
 import contractInstance from "../../../../contracts/Contract";
 import '../common_styles.scss'
 import './styles.scss';
+import { toast } from 'react-toastify';
 
 const apiKey = process.env.REACT_APP_INFURA_API_KEY;
 const apiSecret = process.env.REACT_APP_INFURA_API_SECRET;
@@ -42,17 +43,26 @@ const CreateObject = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // const web3 = new Web3(window.ethereum);
+        const processingToastId = toast.info('Processing...', { autoClose: false, closeOnClick: false, closeButton: false, draggable: false });
 
-        // console.log(priceInKlay);
         const priceInWei = Web3.utils.toWei(priceInKlay.toString(), 'ether');
-        // console.log(priceInWei);
 
         try {
             const cidUrl = await uploadToIPFS();
             const imgCidUrl = await uploadImageToIPFS();
+
+            if (typeof cidUrl === 'undefined' || typeof imgCidUrl === 'undefined') {
+                throw new Error('CID URLs are undefined');
+            }
+
             console.log(cidUrl);
             console.log(imgCidUrl);
+
+            toast.success('Object uploaded successfully!', {
+                closeButton: true,
+                closeOnClick: true,
+                autoClose: 5000,
+            });
 
             const fee = Web3.utils.toWei(((supply * priceInKlay * 5) / 100).toString(), 'ether');
 
@@ -71,7 +81,12 @@ const CreateObject = () => {
                     gas: 2000000
                 });
 
-                alert("Object created successfully!");
+                toast.dismiss(processingToastId);
+                toast.success('Object created successfully!', {
+                    closeButton: true,
+                    closeOnClick: true,
+                    autoClose: 5000,
+                });
 
                 setName("");
                 setDescription("");
@@ -80,19 +95,33 @@ const CreateObject = () => {
                 setImageUrl("");
                 setSupply("");
                 setPriceInKlay("");
+
+                const fileInput = document.getElementById('fileInput');
+                fileInput.value = '';
+                setFile(null);
+
+                const coverInput = document.getElementById('coverInput');
+                coverInput.value = '';
+                setImageFile(null);
             } catch (error) {
+                toast.dismiss(processingToastId);
+                toast.error('Error creating object', {
+                    autoClose: 5000,
+                    closeButton: true,
+                    closeOnClick: true
+                });
                 console.error("Error creating object:", error);
             }
         } catch (error) {
+            toast.dismiss(processingToastId);
+            toast.error('Error uploading data to IPFS', {
+                autoClose: 5000,
+                closeButton: true,
+                closeOnClick: true
+            });
             console.error('데이터 가져오기 실패', error);
         }
     }
-
-    // const handleCreateObject = async (e) => {
-    //     console.log(apiKey);
-    //     console.log(apiSecret);
-    //     e.preventDefault();
-    // };
 
     const handleFileChange = (event) => {
         const selectedFile = event.target.files[0];
@@ -109,7 +138,7 @@ const CreateObject = () => {
 
     const uploadToIPFS = async () => {
         if (!file) {
-            alert('Please select a file first.');
+            toast.warning('Please select a object file!', { closeOnClick: true, });
             return;
         }
 
@@ -127,10 +156,9 @@ const CreateObject = () => {
 
     const uploadImageToIPFS = async () => {
         if (!imageFile) {
-            alert('Please select a file first.');
+            toast.warning('Please select a cover image file!', { closeOnClick: true, });
             return;
         }
-
         try {
             const result = await ipfs.add(imageFile);
             const cid = result.path;
@@ -149,12 +177,12 @@ const CreateObject = () => {
             <div className="form-container">
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
-                        <label>Cover Image</label>
-                        <input type="file" className="file-input" onChange={handleImageChange} />
+                        <label>Cover Image File</label>
+                        <input type="file" id="coverInput" className="file-input" onChange={handleImageChange} />
                     </div>
                     <div className="form-group">
                         <label>Object File</label>
-                        <input type="file" className="file-input" onChange={handleFileChange} />
+                        <input type="file" id="fileInput" className="file-input" onChange={handleFileChange} />
                     </div>
                     <div className="form-group">
                         <label>Name</label>
@@ -173,18 +201,23 @@ const CreateObject = () => {
                         <input type="number" value={supply} onChange={(e) => setSupply(e.target.value)} />
                     </div>
                     <div className="form-group">
-                        <label>Price in Wei</label>
+                        <label>Price</label>
                         <input type="number" value={priceInKlay} onChange={(e) => setPriceInKlay(e.target.value)} />
                     </div>
                     <div>
                         <button type="submit">Create</button>
                     </div>
                 </form>
-                {imageUrl && (
-                    <div className="preview-image">
-                        <img src={imageUrl} alt="Preview" />
+                <div className="image-container">
+                    <label>Cover Image Preview</label>
+                    <div>
+                        {imageUrl && (
+                            <div className="preview-image">
+                                <img src={imageUrl} alt="Preview" />
+                            </div>
+                        )}
                     </div>
-                )}
+                </div>
             </div>
         </div>
     )

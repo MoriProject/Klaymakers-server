@@ -17,7 +17,7 @@ function App() {
             <Route path="/test" element={<TestPage />} />
 
           </Routes>
-          <ToastContainer />
+          <ToastContainer position="bottom-right" newestOnTop />
         </div>
       </Router>
     </Provider>

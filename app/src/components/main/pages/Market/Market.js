@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import contractInstance from "../../../../contracts/Contract";
 import './styles.scss';
 import Modal from 'react-modal';
+import { toast } from 'react-toastify';
 
 const customStyles = {
     overlay: {
@@ -71,6 +72,8 @@ const Market = () => {
                 const objectsForSale = await Promise.all(tokensForSaleObjectPromises);
                 const soldObjects = await Promise.all(tokensSoldObjectPromises);
 
+                console.log(objectsForSale);
+
                 setContractData((prevData) => ({
                     ...prevData,
                     objectsForSale,
@@ -85,6 +88,9 @@ const Market = () => {
     }, []);
 
     const buyToken = async () => {
+
+        const processingToastId = toast.info('Processing...', { autoClose: false, closeOnClick: false, closeButton: false, draggable: false });
+
         try {
             console.log(account);
             console.log(selectedTokenInfo.priceInWei);
@@ -96,8 +102,24 @@ const Market = () => {
                 value: valueInEther
             });
 
-            setMessage('Token purchase successful!');
+            toast.dismiss(processingToastId);
+            toast.success('Rights purchase successful!', {
+                autoClose: 5000,
+                closeButton: true,
+                closeOnClick: true
+            });
+            closeModal();
+
+            // toast.success('Rights purchase successful!');
+            // setMessage('Token purchase successful!');
         } catch (error) {
+            toast.dismiss(processingToastId);
+            toast.error('Object purchase failed.', {
+                autoClose: 5000,
+                closeButton: true,
+                closeOnClick: true
+            });
+            closeModal();
             console.error('Error buying token:', error);
             setMessage('Token purchase failed.');
         }
@@ -112,6 +134,7 @@ const Market = () => {
     const handleTokenSelect = async (tokenId) => {
         setIsOpen(true);
         const objectInfo = await contractInstance.methods.getObjectInfo(tokenId).call();
+        console.log(objectInfo);
         setSelectedToken(tokenId);
         setSelectedTokenInfo(objectInfo);
     };
@@ -169,27 +192,52 @@ const Market = () => {
                 onRequestClose={closeModal}
                 style={customStyles}
             >
-                <h3>Object Info</h3>
                 <form>
                     {(selectedToken !== null && selectedTokenInfo !== null) ?
                         <>
-                            <p>Name: {selectedTokenInfo.name}</p>
-                            <p>Description: {selectedTokenInfo.description}</p>
-                            <p>Usage Rights: {selectedTokenInfo.usageRights}</p>
-                            <p>Object Url: {selectedTokenInfo.objectUrl}</p>
-                            <img src={selectedTokenInfo.imageUrl} />
-                            {selectedTokenInfo.supply !== undefined ?
-                                <p>Supply: {selectedTokenInfo.supply.toString()}</p>
-                                : ''}
-                            <p>tokenId: {selectedToken.toString()}</p>
-                            {selectedTokenInfo.priceInWei !== undefined ?
-                                <p>Price: {formatNumberWithCommas(selectedTokenInfo.priceInWei)} KLAY</p>
-                                : ''}
+                            <div className="object-info">
+                                <img src={selectedTokenInfo.imageUrl} />
+                                <div>
+                                    <div className="info-container">
+                                        <label>Id</label>
+                                        <p>{selectedToken.toString()}</p>
+                                    </div>
+                                    <div className="info-container">
+                                        <label>Name</label>
+                                        <p>{selectedTokenInfo.name}</p>
+                                    </div>
+                                    <div className="info-container">
+                                        <label>Supply</label>
+                                        {selectedTokenInfo.supply !== undefined ?
+                                            <p>{selectedTokenInfo.supply.toString()}</p>
+                                            : ''}
+                                    </div>
+                                    <div className="info-container">
+                                        <label>Price</label>
+                                        {selectedTokenInfo.priceInWei !== undefined ?
+                                            <p>{formatNumberWithCommas(selectedTokenInfo.priceInWei)} KLAY</p>
+                                            : ''}
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="info-line-container">
+                                <label>Description</label>
+                                <p>{selectedTokenInfo.description}</p>
+                            </div>
+                            <div className="info-line-container">
+                                <label>Usage Rights</label>
+                                <p>{selectedTokenInfo.usageRights}</p>
+                            </div>
+                            <div className="info-line-container">
+                                <label>Object Url</label>
+                                <p>{selectedTokenInfo.objectUrl}</p>
+                            </div>
                         </>
                         : ''}
                 </form>
-                <button onClick={buyToken}>Buy Token</button>
-                {message && <p>{message}</p>}
+                <div>
+                    <button className="buy-button" onClick={buyToken}>Buy Token</button>
+                </div>
             </Modal>
         </div>
     )

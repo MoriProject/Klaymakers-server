@@ -29,20 +29,12 @@ contract ObjectToken is ERC1155, ERC1155Receiver, Ownable {
     mapping(uint256 => uint256) public tokenPrice;
     mapping(uint256 => address) public tokenSeller;
 
-    event ObjectCreated(
-        uint256 indexed objectId,
-        string name,
-        address indexed creator
-    );
-    event TokenPurchased(
-        uint256 tokenId,
-        address buyer,
-        address seller,
-        uint256 price
-    );
+    event ObjectCreated(uint256 indexed objectId, string name, address indexed creator);
+    event TokenPurchased(uint256 tokenId, address buyer, address seller, uint256 price);
     event Withdrawal(address indexed owner, uint256 amount);
 
-    constructor() ERC1155("") Ownable(msg.sender) {}
+    constructor() ERC1155("") Ownable(msg.sender) {
+    }
 
     /// @notice 객체를 생성한다.(send 함수)
     /// @param name 객체 이름 string.
@@ -52,17 +44,9 @@ contract ObjectToken is ERC1155, ERC1155Receiver, Ownable {
     /// @param supply 객체 배포 개수 uint.
     /// @param priceInWei 객체 1개 당 가격 uint.
     /// @return newObjectId 객체 식별자 값인 uint.
-    function createObject(
-        string memory name,
-        string memory description,
-        string memory usageRights,
-        string memory objectUrl,
-        string memory imageUrl,
-        uint256 supply,
-        uint256 priceInWei
-    ) public payable returns (uint256) {
+    function createObject(string memory name, string memory description, string memory usageRights, string memory objectUrl, string memory imageUrl, uint256 supply, uint256 priceInWei) public payable returns (uint256) {
         require(supply >= 1, "Supply must be at least 1");
-
+        
         uint256 totalCost = supply * priceInWei;
         uint256 fee = (totalCost * PERCENTAGE) / 100;
 
@@ -70,16 +54,7 @@ contract ObjectToken is ERC1155, ERC1155Receiver, Ownable {
 
         _tokenIds.increment();
         uint256 newObjectId = _tokenIds.current();
-        objects[newObjectId] = Object(
-            name,
-            description,
-            usageRights,
-            objectUrl,
-            imageUrl,
-            supply,
-            priceInWei,
-            true
-        );
+        objects[newObjectId] = Object(name, description, usageRights, objectUrl, imageUrl, supply, priceInWei, true);
         _mint(msg.sender, newObjectId, 1, "");
 
         if (supply > 1) {
@@ -99,16 +74,10 @@ contract ObjectToken is ERC1155, ERC1155Receiver, Ownable {
     function buyToken(uint256 tokenId) public payable {
         require(msg.value == tokenPrice[tokenId], "Incorrect price");
         // require(balanceOf(tokenSeller[tokenId], tokenId) > 0, "No tokens available for sale");
-        require(
-            isTokenForSale(tokenId) == true,
-            "No tokens available for sale"
-        );
-        require(
-            balanceOf(address(this), tokenId) > 0,
-            "No tokens available for sale"
-        );
+        require(isTokenForSale(tokenId) == true, "No tokens available for sale");
+        require(balanceOf(address(this), tokenId) > 0, "No tokens available for sale");
 
-        uint256 sellerShare = (msg.value * 95) / 100;
+        uint256 sellerShare = msg.value * 95 / 100;
         uint256 contractShare = msg.value - sellerShare;
 
         // _safeTransferFrom(tokenSeller[tokenId], msg.sender, tokenId, 1, "");
@@ -119,39 +88,27 @@ contract ObjectToken is ERC1155, ERC1155Receiver, Ownable {
             objects[tokenId].isForSale = false;
         }
 
-        emit TokenPurchased(
-            tokenId,
-            msg.sender,
-            tokenSeller[tokenId],
-            msg.value
-        );
+        emit TokenPurchased(tokenId, msg.sender, tokenSeller[tokenId], msg.value);
     }
 
     /// @notice 미사용 함수.
     function listTokenOnMarket(uint256 tokenId, uint256 price) public {
-        require(
-            balanceOf(msg.sender, tokenId) > 0,
-            "You must own the token to list it"
-        );
+        require(balanceOf(msg.sender, tokenId) > 0, "You must own the token to list it");
         tokenPrice[tokenId] = price;
         tokenSeller[tokenId] = msg.sender;
     }
 
     /// @notice 객체 1개의 정보를 얻어온다.(call 함수)
     /// @param tokenId 객체 식별자 uint.
-    /// @return Object 객체의 상세 정보를 담고 있는 구조체(json)입니다.
-    function getObjectInfo(
-        uint256 tokenId
-    ) public view returns (Object memory) {
+     /// @return Object 객체의 상세 정보를 담고 있는 구조체(json)입니다.
+    function getObjectInfo(uint256 tokenId) public view returns (Object memory) {
         return objects[tokenId];
     }
 
     /// @notice 사용자가 소유한 모든 토큰의 ID를 배열로 반환합니다.(call 함수)
     /// @param user 토큰 ID를 조회할 사용자의 주소입니다.
     /// @return ownedTokens 사용자가 소유한 토큰 ID 배열입니다.
-    function getUserTokens(
-        address user
-    ) public view returns (uint256[] memory) {
+    function getUserTokens(address user) public view returns (uint256[] memory) {
         uint256 tokenCount = _tokenIds.current();
         uint256[] memory userTokens = new uint256[](tokenCount);
         uint256 userIndex = 0;
@@ -236,10 +193,7 @@ contract ObjectToken is ERC1155, ERC1155Receiver, Ownable {
     /// @param user 확인할 사용자의 주소입니다. address
     /// @param tokenId 확인할 토큰의 식별자입니다.
     /// @return 소유하고 있으면 true, 그렇지 않으면 false를 반환합니다.
-    function checkTokenOwnership(
-        address user,
-        uint256 tokenId
-    ) public view returns (bool) {
+    function checkTokenOwnership(address user, uint256 tokenId) public view returns (bool) {
         return balanceOf(user, tokenId) > 0;
     }
 
@@ -259,29 +213,15 @@ contract ObjectToken is ERC1155, ERC1155Receiver, Ownable {
     }
 
     // related to ERC1155Receiver
-    function onERC1155Received(
-        address operator,
-        address from,
-        uint256 id,
-        uint256 value,
-        bytes calldata data
-    ) public override returns (bytes4) {
+    function onERC1155Received(address operator, address from, uint256 id, uint256 value, bytes calldata data) public override returns (bytes4) {
         return this.onERC1155Received.selector;
     }
 
-    function onERC1155BatchReceived(
-        address operator,
-        address from,
-        uint256[] calldata ids,
-        uint256[] calldata values,
-        bytes calldata data
-    ) public override returns (bytes4) {
+    function onERC1155BatchReceived(address operator, address from, uint256[] calldata ids, uint256[] calldata values, bytes calldata data) public override returns (bytes4) {
         return this.onERC1155BatchReceived.selector;
     }
 
-    function supportsInterface(
-        bytes4 interfaceId
-    ) public view override(ERC1155, ERC1155Receiver) returns (bool) {
+    function supportsInterface(bytes4 interfaceId) public view override(ERC1155, ERC1155Receiver) returns (bool) {
         return super.supportsInterface(interfaceId);
     }
 }
