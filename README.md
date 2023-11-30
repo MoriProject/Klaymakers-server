@@ -65,10 +65,30 @@ Click [here](https://baobab.klaytnscope.com/account/0xdbEE6A39ac4084EE45DD8a2e47
  - Then you can see the project running.
 
 ## Usage
-사용자가 프로젝트를 사용하는 방법에 대한 안내
+In order for you to use most services, you must click `Sign in with Metamask` in the upper right corner after running the project.
+
+Did you sign in successfully? And do you have some KLAY (test network)?
+
+congratulations! You can now use most of the features of our project.
 
 ## Features
-프로젝트의 주요 기능과 특징 설명
+### Create Object
+This function uploads information about objects and object files, and generates rights tokens. You can generate rights tokens by paying a small fee.
+
+### Market
+If you have a sufficient amount of KLAY, you can view rights tokens created by others and purchase the rights tokens you want.
+
+### My Object
+You can see a list of rights tokens you own here.
+
+### My Page
+You can update your nickname and email information.
+
+### Verify Ownership
+You can check if someone owns a specific rights token.
+
+### Withdraw
+Only the contract owner can withdraw fees.
 
 ## Authors and Acknowledgment
 We would like to thank the To The Moon team members who participated in this project.
